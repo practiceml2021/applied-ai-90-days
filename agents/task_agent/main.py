@@ -2,13 +2,15 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
 API_KEY = os.getenv("OPENAI_API_KEY")
-API_URL = "https://api.openai.com/v1/responses"  # UPDATED endpoint
+API_URL = "https://api.openai.com/v1/responses"
 
-def get_task_breakdown(goal: str):
+
+def get_task_breakdown(goal: str) -> dict:
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
@@ -16,42 +18,78 @@ def get_task_breakdown(goal: str):
 
     prompt = f"""
 You are a planning assistant.
-Break the following goal into clear, actionable steps.
-Return output as JSON with a list called "steps".
+
+You MUST respond with ONLY valid JSON.
+DO NOT include explanations, markdown, or extra text.
+
+Required format:
+{{
+  "steps": [
+    "Step 1",
+    "Step 2",
+    "Step 3"
+  ]
+}}
 
 Goal: {goal}
 """
 
     payload = {
-        "model": "gpt-4.1-mini",  # modern model
+        "model": "gpt-4.1-mini",
         "input": prompt,
-        "temperature": 0.2
+        "temperature": 0.0
     }
 
-    response = requests.post(API_URL, headers=headers, json=payload, timeout=30)
+    response = requests.post(
+        API_URL,
+        headers=headers,
+        json=payload,
+        timeout=30
+    )
     response.raise_for_status()
+
     data = response.json()
+    text = data["output"][0]["content"][0]["text"]
 
-    # Extract text output from the response
-    # The Responses API returns content in: data['output'][0]['content'][0]['text']
-    result_text = data["output"][0]["content"][0]["text"]
+    # 🔒 HARD JSON EXTRACTION
+    start = text.find("{")
+    end = text.rfind("}") + 1
 
-    # Attempt to parse JSON if user returned valid JSON
-    try:
-        result_json = json.loads(result_text)
-    except json.JSONDecodeError:
-        # fallback if the response is not strict JSON
-        result_json = {"steps": [step.strip() for step in result_text.split("\n") if step.strip()]}
+    if start == -1 or end == -1:
+        raise RuntimeError("No JSON object found in model output")
 
-    return result_json
+    json_text = text[start:end]
+
+    parsed = json.loads(json_text)
+
+    if not isinstance(parsed, dict):
+        raise RuntimeError("Parsed output is not a dict")
+
+    return parsed
+
+
+
+def save_tasks_to_file(task_data: dict):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"tasks_{timestamp}.json"
+
+    with open(filename, "w") as f:
+        json.dump(task_data, f, indent=2)
+
+    print(f"✅ Tasks saved to {filename}")
+
 
 if __name__ == "__main__":
     goal = input("Enter your goal: ")
-    result = get_task_breakdown(goal)
 
-    print("\n--- Task Breakdown ---")
-    print(json.dumps(result, indent=2))
+    try:
+        result = get_task_breakdown(goal)
 
-    with open("tasks.json", "w") as f:
-        json.dump(result, f, indent=2)
+        print("\n--- Parsed Output ---")
+        print(json.dumps(result, indent=2))
+
+        save_tasks_to_file(result)
+
+    except Exception as e:
+        print("❌ Error occurred:", str(e))
 
