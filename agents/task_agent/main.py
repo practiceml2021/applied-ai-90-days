@@ -3,6 +3,12 @@ import json
 import requests
 from dotenv import load_dotenv
 from datetime import datetime
+from pydantic import BaseModel, ValidationError
+from typing import List
+
+class TaskPlan(BaseModel):
+    steps: List[str]
+
 
 load_dotenv()
 
@@ -73,10 +79,18 @@ def save_tasks_to_file(task_data: dict):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"tasks_{timestamp}.json"
 
-    with open(filename, "w") as f:
-        json.dump(task_data, f, indent=2)
+    try:
+        validated = TaskPlan(**task_data)
+    except ValidationError as ve:
+        print("❌ Output does not match expected schema.")
+        print(ve)
+        return
 
-    print(f"✅ Tasks saved to {filename}")
+    with open(filename, "w") as f:
+        json.dump(validated.dict(), f, indent=2)
+
+    print(f"✅ Validated tasks saved to {filename}")
+
 
 
 if __name__ == "__main__":
