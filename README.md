@@ -20,6 +20,5 @@ For the next 90 days, I commit to becoming an Applied AI Engineer by building ag
 - Day 2: Task Breakdown Agent working
 - Day 3: Agent writes timestamped task plans to disk
 - Day 4: Graceful handling of failures
-# Demo
 - Day 5: Task Breakdown Agent demo (see demos/task_agent_demo_day5.mp4)
 - Day 6: Added executor that executes tasks assigned by planner
