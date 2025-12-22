@@ -22,7 +22,14 @@ if __name__ == "__main__":
         for file in files:
             if file not in seen:
                 print(f"🆕 New task file detected: {file}")
-                seen.add(file)
+
+                if "email" in file.lower():
+    			print("📧 Action: would send email")
+		else:
+    			print("🗂 Action: logged for manual review")
+
+		seen.add(file)
+
 
         state["processed_files"] = list(seen)
         save_state(state)
