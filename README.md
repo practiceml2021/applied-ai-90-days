@@ -30,3 +30,4 @@ For the next 90 days, I commit to becoming an Applied AI Engineer by building ag
 - Day 12: Failure handling and noise check for research agent
 - Day 13: Enforce source honesty in summarization
 - Day 14: Week2 review
+- Day 15: automation agent skeleton with persistent state
