@@ -15,17 +15,22 @@ def summarize(text: str, question: str):
 
     prompt = f"""
 You are a research assistant.
-Given the following text, answer the research question.
 
-Question: {question}
+Answer the research question using ONLY the information in the text.
+
+Question:
+{question}
 
 Text:
 {text}
 
 Rules:
-- Only use information present in the text
-- If information is missing, say "Not found in source"
+- Return 3–5 bullet points
+- Each bullet must end with: "(from retrieved source)"
+- If the answer cannot be found, say: "Not found in retrieved sources"
+- Do not add outside knowledge
 """
+
 
     payload = {
         "model": "gpt-4o-mini",
