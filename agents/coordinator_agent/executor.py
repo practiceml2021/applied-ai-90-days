@@ -9,7 +9,7 @@ def execute(plan_steps):
             if agent == "research":
                 result = f"Research result for: {task}"
             elif agent == "automation":
-                result = f"Automation decision for: {task}"
+                raise RuntimeError("Simulated automation failure")
             else:
                 result = "Unknown agent"
 
