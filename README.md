@@ -31,3 +31,9 @@ For the next 90 days, I commit to becoming an Applied AI Engineer by building ag
 - Day 13: Enforce source honesty in summarization
 - Day 14: Week2 review
 - Day 15: automation agent skeleton with persistent state
+- Day 16: File watching, detects new task files
+- Day 17: Basic decision logic for automation agent
+- Day 18: Logging(Audit trail)
+- Day 19: Cost awareness - cost tracking
+- Day 20: Automation agent Demo
+- Day 21: Week3 review

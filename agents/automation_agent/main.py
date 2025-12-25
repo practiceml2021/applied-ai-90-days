@@ -1,6 +1,8 @@
 import os
 import time
 from state_manager import load_state, save_state
+from logger import log_action
+from cost_tracker import record_cost
 
 TASKS_DIR = "../task_agent"
 
@@ -24,11 +26,18 @@ if __name__ == "__main__":
                 print(f"🆕 New task file detected: {file}")
 
                 if "email" in file.lower():
-    			print("📧 Action: would send email")
-		else:
-    			print("🗂 Action: logged for manual review")
+                        action = "would send email"
+                        print("📧 Action: would send email")
+                else:
+                        action = "logged for manual review"
+                        print("🗂 Action: logged for manual review")
 
-		seen.add(file)
+                record_cost("automation_agent", 0.0001)
+
+                
+                log_action(f"{file} -> {action}")
+                seen.add(file)
+
 
 
         state["processed_files"] = list(seen)
