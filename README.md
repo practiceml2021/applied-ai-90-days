@@ -36,4 +36,4 @@ For the next 90 days, I commit to becoming an Applied AI Engineer by building ag
 - Day 18: Logging(Audit trail)
 - Day 19: Cost awareness - cost tracking
 - Day 20: Automation agent Demo
-- Day 21: Week3 review
+- Day 21: Week3 review(stateful automation agent with logging and cost awareness)
