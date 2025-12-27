@@ -37,3 +37,10 @@ For the next 90 days, I commit to becoming an Applied AI Engineer by building ag
 - Day 19: Cost awareness - cost tracking
 - Day 20: Automation agent Demo
 - Day 21: Week3 review(stateful automation agent with logging and cost awareness)
+- Day 22: Implemented Coordinator agent
+- Day 23: Intentional Failure injection
+- Day 24: Implemented retry logic
+- Day 25: Final Aggregation
+- Day 26: Demo 
+- Day 27: Review and next steps.
+- Day 28: Week 4 complete review.
