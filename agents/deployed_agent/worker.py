@@ -10,7 +10,7 @@ os.makedirs(STATE_DIR, exist_ok=True)
 
 async def process_task(task):
     print(f"⚙️ Processing {task['id']}")
-    await asyncio.sleep(5)  # simulate long work
+    await asyncio.sleep(5)
     print(f"✅ Finished {task['id']}")
 
 def load_tasks():
